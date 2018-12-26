@@ -16,11 +16,17 @@ defmodule Scribble do
             output: nil,
             ref: nil
 
+  @doc false
   defdelegate init(state), to: Backend
+  @doc false
   defdelegate handle_call(msg, state), to: Backend
+  @doc false
   defdelegate handle_event(msg, state), to: Backend
+  @doc false
   defdelegate handle_info(msg, state), to: Backend
+  @doc false
   defdelegate code_change(old_vsn, state, extra), to: Backend
+  @doc false
   defdelegate terminate(reason, state), to: Backend
 
   @type level :: atom()

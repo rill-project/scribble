@@ -1,4 +1,6 @@
 defmodule Scribble.Logger.Formatter do
+  @moduledoc false
+
   alias Scribble.Level
   alias Scribble.Logger.Formatter.Pretty
 

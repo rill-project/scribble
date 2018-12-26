@@ -1,4 +1,6 @@
 defmodule Scribble.Logger.Formatter.Pretty do
+  @moduledoc false
+
   @spec time(time_tuple :: tuple()) :: String.t()
   def time(time_tuple) do
     {date, {hours, minutes, seconds, micro}} = time_tuple

@@ -1,4 +1,6 @@
 defmodule Scribble.Level do
+  @moduledoc false
+
   @type t :: atom()
   @type color :: atom()
   @type comparison :: :lt | :gt | :eq

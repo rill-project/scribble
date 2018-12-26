@@ -26,7 +26,12 @@ defmodule Scribble.MixProject do
           :race_conditions
         ],
         paths: ["_build/#{Mix.env()}/lib/scribble/consolidated"]
-      ]
+      ],
+      # Docs
+      name: "Scribble",
+      source_url: "https://github.com/rill-project/scribble",
+      homepage_url: "https://github.com/rill-project/scribble",
+      docs: docs()
     ]
   end
 
@@ -39,11 +44,17 @@ defmodule Scribble.MixProject do
 
   def package do
     [
+      maintainers: ["Francesco Belladonna"],
       description: "Wrapper for Logger, with configurable levels and tagging",
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/rill-project/scribble"},
-      source_url: "https://github.com/rill-project/scribble",
-      homepage_url: "https://github.com/rill-project/scribble"
+      links: %{"GitHub" => "https://github.com/rill-project/scribble"}
+    ]
+  end
+
+  def docs do
+    [
+      main: "Scribble",
+      extras: ["README.md"]
     ]
   end
 
