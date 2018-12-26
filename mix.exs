@@ -9,6 +9,7 @@ defmodule Scribble.MixProject do
       app: :scribble,
       version: @version,
       elixir: "~> 1.7",
+      package: package(),
       deps: deps(),
       aliases: aliases(),
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -33,6 +34,15 @@ defmodule Scribble.MixProject do
   def application do
     [
       extra_applications: [:logger]
+    ]
+  end
+
+  def package do
+    [
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/rill-project/scribble"},
+      source_url: "https://github.com/rill-project/scribble",
+      homepage_url: "https://github.com/rill-project/scribble"
     ]
   end
 
