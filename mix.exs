@@ -39,6 +39,7 @@ defmodule Scribble.MixProject do
 
   def package do
     [
+      description: "Wrapper for Logger, with configurable levels and tagging",
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/rill-project/scribble"},
       source_url: "https://github.com/rill-project/scribble",
