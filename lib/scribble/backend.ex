@@ -267,4 +267,33 @@ defmodule Scribble.Backend do
     |> await_io()
     |> flush()
   end
+
+  defmacro __using__(_opts \\ []) do
+    quote do
+      @behaviour :gen_event
+
+      defstruct buffer: [],
+                buffer_size: 0,
+                colors: nil,
+                device: nil,
+                format: nil,
+                level: nil,
+                max_buffer: nil,
+                output: nil,
+                ref: nil
+
+      @doc false
+      defdelegate init(state), to: Scribble.Backend
+      @doc false
+      defdelegate handle_call(msg, state), to: Scribble.Backend
+      @doc false
+      defdelegate handle_event(msg, state), to: Scribble.Backend
+      @doc false
+      defdelegate handle_info(msg, state), to: Scribble.Backend
+      @doc false
+      defdelegate code_change(old_vsn, state, extra), to: Scribble.Backend
+      @doc false
+      defdelegate terminate(reason, state), to: Scribble.Backend
+    end
+  end
 end

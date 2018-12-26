@@ -53,8 +53,8 @@ defmodule Scribble.MixProject do
 
   def docs do
     [
-      main: "Scribble",
-      extras: ["README.md"]
+      main: "README.md",
+      extras: ["README.md": [filename: "README.md", title: "Scribble"]]
     ]
   end
 

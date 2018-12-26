@@ -1,43 +1,19 @@
 defmodule Scribble do
   @moduledoc "Backend for Elixir Logger"
 
-  alias Scribble.Backend
   require Logger
-
-  @behaviour :gen_event
-
-  defstruct buffer: [],
-            buffer_size: 0,
-            colors: nil,
-            device: nil,
-            format: nil,
-            level: nil,
-            max_buffer: nil,
-            output: nil,
-            ref: nil
-
-  @doc false
-  defdelegate init(state), to: Backend
-  @doc false
-  defdelegate handle_call(msg, state), to: Backend
-  @doc false
-  defdelegate handle_event(msg, state), to: Backend
-  @doc false
-  defdelegate handle_info(msg, state), to: Backend
-  @doc false
-  defdelegate code_change(old_vsn, state, extra), to: Backend
-  @doc false
-  defdelegate terminate(reason, state), to: Backend
+  use Scribble.Backend
 
   @type level :: atom()
   @type chardata_or_fun ::
           String.t() | (() -> String.t() | {String.t(), keyword()})
-  @type written :: :ok | term()
   @type metadata :: keyword()
+  @type log_output :: :ok | term()
 
   defguardp is_log(chardata_or_fun) when not is_list(chardata_or_fun)
 
-  @spec log(level :: level(), chardata_or_fun :: chardata_or_fun()) :: written()
+  @spec log(level :: level(), chardata_or_fun :: chardata_or_fun()) ::
+          log_output()
   defmacro log(level, chardata_or_fun)
            when is_atom(level) and is_log(chardata_or_fun) do
     quote do
@@ -49,7 +25,7 @@ defmodule Scribble do
     end
   end
 
-  @spec log(level :: level(), do: term()) :: written()
+  @spec log(level :: level(), do: term()) :: log_output()
   defmacro log(level, do: block) when is_atom(level) do
     quote do
       unquote(__MODULE__).log(
@@ -60,7 +36,8 @@ defmodule Scribble do
     end
   end
 
-  @spec log(level :: level(), metadata :: metadata(), do: term()) :: written()
+  @spec log(level :: level(), metadata :: metadata(), do: term()) ::
+          log_output()
   defmacro log(level, metadata, do: block)
            when is_atom(level) and is_list(metadata) do
     quote do
@@ -76,7 +53,7 @@ defmodule Scribble do
           level :: level(),
           metadata :: metadata(),
           chardata_or_fun :: chardata_or_fun()
-        ) :: written()
+        ) :: log_output()
   defmacro log(level, metadata, chardata_or_fun)
            when is_atom(level) and is_list(metadata) and is_log(chardata_or_fun) do
     quote do
@@ -92,7 +69,7 @@ defmodule Scribble do
           level :: level(),
           chardata_or_fun :: chardata_or_fun(),
           metadata :: metadata()
-        ) :: written()
+        ) :: log_output()
   defmacro log(level, chardata_or_fun, metadata)
            when is_atom(level) and is_list(metadata) and is_log(chardata_or_fun) do
     tag = metadata[:tag]
@@ -139,7 +116,7 @@ defmodule Scribble do
   end
 
   for level <- Application.get_env(:logger, Scribble)[:levels] do
-    @spec unquote(level)(do: term()) :: written()
+    @spec unquote(level)(do: term()) :: log_output()
     defmacro unquote(level)(do: block) do
       level = unquote(level)
 
@@ -152,7 +129,7 @@ defmodule Scribble do
       end
     end
 
-    @spec unquote(level)(chardata_or_fun :: chardata_or_fun()) :: written()
+    @spec unquote(level)(chardata_or_fun :: chardata_or_fun()) :: log_output()
     defmacro unquote(level)(chardata_or_fun) when is_log(chardata_or_fun) do
       level = unquote(level)
 
@@ -165,7 +142,7 @@ defmodule Scribble do
       end
     end
 
-    @spec unquote(level)(metadata :: metadata(), do: term()) :: written()
+    @spec unquote(level)(metadata :: metadata(), do: term()) :: log_output()
     defmacro unquote(level)(metadata, do: block) when is_list(metadata) do
       level = unquote(level)
 
@@ -181,7 +158,7 @@ defmodule Scribble do
     @spec unquote(level)(
             metadata :: metadata(),
             chardata_or_fun :: chardata_or_fun()
-          ) :: written()
+          ) :: log_output()
     defmacro unquote(level)(metadata, chardata_or_fun)
              when is_log(chardata_or_fun) and is_list(metadata) do
       level = unquote(level)
@@ -198,7 +175,7 @@ defmodule Scribble do
     @spec unquote(level)(
             chardata_or_fun :: chardata_or_fun(),
             metadata :: metadata()
-          ) :: written()
+          ) :: log_output()
     defmacro unquote(level)(chardata_or_fun, metadata)
              when is_log(chardata_or_fun) and is_list(metadata) do
       level = unquote(level)
