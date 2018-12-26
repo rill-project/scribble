@@ -50,7 +50,8 @@ defmodule Scribble.MixProject do
   # Run "mix help deps" to learn about dependencies.
   def deps do
     [
-      {:dialyxir, ">= 1.0.0-rc.3", only: [:dev], runtime: false}
+      {:dialyxir, ">= 1.0.0-rc.3", only: [:dev], runtime: false},
+      {:ex_doc, ">= 0.19.2", only: [:dev]}
     ]
   end
 
