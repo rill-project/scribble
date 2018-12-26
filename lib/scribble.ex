@@ -1,0 +1,2 @@
+defmodule Scribble do
+end
