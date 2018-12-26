@@ -1,12 +1,13 @@
 use Mix.Config
 
 config :logger, Scribble,
+  device: :standard_error,
   levels: [:trace, :debug, :info, :warn, :error, :fatal],
-  levelpad: [info: " ", warn: " "],
   logger_levels: [trace: :debug, fatal: :error],
+  levelpads: [info: " ", warn: " "],
   colors: [
-    trace: :white,
-    debug: :normal,
+    trace: :normal,
+    debug: :white,
     info: :cyan,
     warn: :yellow,
     error: :green,
