@@ -96,7 +96,7 @@ Scribble.log(:fatal, "six")
 Default Scribble configuration is the following:
 
 ```elixir
-config :logger, Scribble,
+config :scribble,
   device: :standard_error,
   levels: [:trace, :debug, :info, :warn, :error, :fatal],
   # Used for logger compile_time_purge, converts scribble levels to

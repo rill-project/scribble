@@ -114,7 +114,7 @@ defmodule Scribble do
     end
   end
 
-  for level <- Application.get_env(:logger, Scribble)[:levels] do
+  for level <- Scribble.Config.get(:levels) do
     @spec unquote(level)(do: term()) :: log_output()
     defmacro unquote(level)(do: block) do
       level = unquote(level)

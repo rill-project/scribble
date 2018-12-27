@@ -3,25 +3,27 @@ defmodule Scribble.Level do
   Comparison and information gathering for log levels
   """
 
+  alias Scribble.Config
+
   @type t :: atom()
   @type color :: atom()
   @type comparison :: :lt | :gt | :eq
 
   @spec levels() :: [t()]
   def levels do
-    get_env(:levels, [])
+    Config.get(:levels, [])
   end
 
   @spec get_color(level :: t(), config :: nil | keyword()) :: color()
   def get_color(level, config \\ nil) when is_atom(level) do
-    config = config || get_env(:colors, [])
+    config = config || Config.get(:colors, [])
 
     Keyword.get(config, level)
   end
 
   @spec get_levelpad(level :: t(), config :: nil | keyword()) :: color()
   def get_levelpad(level, config \\ nil) when is_atom(level) do
-    config = config || get_env(:levelpads, [])
+    config = config || Config.get(:levelpads, [])
 
     Keyword.get(config, level) || ""
   end
@@ -29,7 +31,7 @@ defmodule Scribble.Level do
   @spec get_logger_level(level :: t(), config :: nil | keyword()) ::
           Logger.level()
   def get_logger_level(level, config \\ nil) when is_atom(level) do
-    config = config || get_env(:logger_levels, [])
+    config = config || Config.get(:logger_levels, [])
     Keyword.get(config, level) || :debug
   end
 
@@ -82,11 +84,5 @@ defmodule Scribble.Level do
       {:error, error} -> raise ArgumentError, message: to_string(error)
       comparison -> comparison
     end
-  end
-
-  defp get_env(key, default) do
-    config = Application.get_env(:logger, Scribble)
-    config = config || []
-    Keyword.get(config, key, default)
   end
 end

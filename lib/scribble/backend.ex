@@ -2,6 +2,7 @@ defmodule Scribble.Backend do
   @moduledoc false
 
   alias Scribble.Level
+  alias Scribble.Config
 
   @behaviour :gen_event
 
@@ -16,8 +17,8 @@ defmodule Scribble.Backend do
             ref: nil
 
   def init(Scribble) do
-    config = Application.get_env(:logger, Scribble)
-    device = Keyword.get(config, :device, :standard_error)
+    config = Config.get()
+    device = Config.get(:device, :standard_error)
 
     if Process.whereis(device) do
       {:ok, init(config, %__MODULE__{})}
@@ -27,7 +28,7 @@ defmodule Scribble.Backend do
   end
 
   def init({__MODULE__, opts}) when is_list(opts) do
-    config = Application.get_env(:logger, Scribble)
+    config = Config.get()
     config = configure_merge(config, opts)
     {:ok, init(config, %__MODULE__{})}
   end
@@ -103,9 +104,9 @@ defmodule Scribble.Backend do
   end
 
   defp configure(options, state) do
-    config = Application.get_env(:logger, Scribble)
+    config = Config.get()
     config = configure_merge(config, options)
-    Application.put_env(:logger, Scribble, config)
+    Config.put(config)
     init(config, state)
   end
 
@@ -200,7 +201,7 @@ defmodule Scribble.Backend do
   defp color_event(data, _level, %{enabled: false}, _md), do: data
 
   defp color_event(data, level, %{enabled: true} = colors, md) do
-    color = md[:ansi_color] || Map.fetch!(colors, level)
+    color = md[:ansi_color] || Map.get(colors, level, :normal)
     [IO.ANSI.format_fragment(color, true), data | IO.ANSI.reset()]
   end
 
