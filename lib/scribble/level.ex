@@ -1,5 +1,7 @@
 defmodule Scribble.Level do
-  @moduledoc false
+  @moduledoc """
+  Comparison and information gathering for log levels
+  """
 
   @type t :: atom()
   @type color :: atom()

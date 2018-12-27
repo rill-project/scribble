@@ -16,6 +16,12 @@ def deps do
 end
 ```
 
+Then, ensure `:logger` uses `Scribble` as backend:
+
+```elixir
+config :logger, backends: [Scribble]
+```
+
 The docs can
 be found at [https://hexdocs.pm/scribble](https://hexdocs.pm/scribble).
 

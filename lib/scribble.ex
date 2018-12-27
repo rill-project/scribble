@@ -79,17 +79,16 @@ defmodule Scribble do
     metadata = Keyword.put(metadata, :tags, tags)
     logger_level = Scribble.Level.get_logger_level(level)
 
-    quote bind_quoted: [
-            logger_level: logger_level,
-            level: level,
-            chardata_or_fun: chardata_or_fun,
-            metadata: metadata
-          ] do
+    quote do
       require Logger
 
-      Logger.log(
-        logger_level,
+      metadata = unquote(metadata)
+
+      Logger.unquote(logger_level)(
         fn ->
+          level = unquote(level)
+          chardata_or_fun = unquote(chardata_or_fun)
+
           out =
             if is_function(chardata_or_fun) do
               chardata_or_fun.()
