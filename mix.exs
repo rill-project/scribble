@@ -47,7 +47,16 @@ defmodule Scribble.MixProject do
       maintainers: ["Francesco Belladonna"],
       description: "Wrapper for Logger, with configurable levels and tagging",
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/rill-project/scribble"}
+      links: %{"GitHub" => "https://github.com/rill-project/scribble"},
+      files: [
+        ".formatter.exs",
+        "mix.exs",
+        "README.md",
+        "VERSION",
+        "test",
+        "lib",
+        "config"
+      ]
     ]
   end
 
