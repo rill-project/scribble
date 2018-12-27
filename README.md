@@ -11,7 +11,7 @@ dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:scribble, "~> 0.1.2"}
+    {:scribble, ">= 0.0.0"}
   ]
 end
 ```
