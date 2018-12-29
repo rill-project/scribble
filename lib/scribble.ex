@@ -78,11 +78,28 @@ defmodule Scribble do
     metadata = Keyword.delete(metadata, :tag)
     metadata = Keyword.put(metadata, :tags, tags)
     logger_level = Scribble.Level.get_logger_level(level)
+    opts = Module.get_attribute(__CALLER__.module, :scribble) || []
 
     quote do
       require Logger
 
+      opts = unquote(opts)
+      default_tags = opts[:tags] || []
+
+      default_tags =
+        case opts[:tag] do
+          nil -> default_tags
+          tag -> [tag | default_tags]
+        end
+
       metadata = unquote(metadata)
+      tags = Keyword.get(metadata, :tags, [])
+      tags = default_tags ++ tags
+
+      metadata =
+        metadata
+        |> Keyword.put(:include_tags, opts[:include_tags] || false)
+        |> Keyword.put(:tags, tags)
 
       Logger.unquote(logger_level)(
         fn ->

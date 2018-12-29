@@ -22,7 +22,19 @@ defmodule Scribble.Logger.Formatter do
         text -> " #{text}"
       end
 
-    "[#{time}]#{target} #{text_level}: #{pad}#{message}\n"
+    case metadata[:include_tags] do
+      true ->
+        tags =
+          metadata
+          |> Keyword.get(:tags, [])
+          |> Enum.map(&Kernel.to_string/1)
+          |> Enum.join(", ")
+
+        "[#{time}]#{target} #{text_level} (#{tags}): #{pad}#{message}\n"
+
+      _ ->
+        "[#{time}]#{target} #{text_level}: #{pad}#{message}\n"
+    end
   rescue
     _ -> "could not format: #{inspect({level, message, metadata})}"
   end

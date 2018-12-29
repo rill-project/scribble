@@ -67,6 +67,7 @@ Scribble.trace do
   "one"
 end
 
+# The single tag will be prepended to `:tags`, so tags: [:hello, :bar, :baz]
 Scribble.debug tag: :hello, tags: [:bar, :baz] do
   "two"
 end
@@ -89,6 +90,30 @@ Scribble.fatal tag: [:end] do
 end
 
 Scribble.log(:fatal, "six")
+```
+
+It's possible to set default tags through `@scribble` attribute, which can be
+set multiple times to change the configuration (it doesn't accumulate):
+
+```elixir
+defmodule Foo do
+  @scribble tag: :foo
+  def test1 do
+    Scribble.info tag: :bar do
+      "message"
+    end
+    # the message will have `tags: [:foo, :bar]`
+  end
+
+  # Tags can also be printed upon request
+  @scribble tag: bar, include_tags: true
+  def test2 do
+    Scribble.info tag: :baz do
+      "message"
+    end
+    # => (bar, baz) message
+  end
+end
 ```
 
 ## Configuration

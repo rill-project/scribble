@@ -35,9 +35,29 @@ defmodule Hello do
   end
 end
 
+defmodule DefaultTags do
+  require Scribble
+
+  @scribble tag: :mydefaulttag, include_tags: true
+  def show do
+    Scribble.fatal tag: :special do
+      "special"
+    end
+  end
+
+  @scribble tags: [:special1, :special2], include_tags: true
+  def show2 do
+    Scribble.fatal do
+      "special"
+    end
+  end
+end
+
 defmodule Run do
   def run do
     Hello.world()
+    DefaultTags.show()
+    DefaultTags.show2()
   end
 end
 
